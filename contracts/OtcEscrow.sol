@@ -52,7 +52,7 @@ contract OtcEscrow {
         IERC20(sentToken).safeTransfer(address(beneficiary), sentAmount);
     }
 
-    /// @dev Return sentToken to Fei Protocol to revoke escrow deal
+    /// @dev Return sentToken to revoke escrow deal
     function revoke() external {
         require(msg.sender == recipient, "onlyRecipient");
         uint256 sentTokenBalance = IERC20(sentToken).balanceOf(address(this));

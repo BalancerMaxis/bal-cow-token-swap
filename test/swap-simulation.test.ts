@@ -56,7 +56,7 @@ describe("Swap Simulation", function () {
 
     // These are the transactions that should run in the Aave proposal
     await aaveToken.connect(aave).transfer(otcEscrow.address, aaveAmountWad);
-    await otcEscrow.connect(aave).swap({ gasLimit: 6000000 });
+    await otcEscrow.connect(aave).swap();
 
     // Verifying balances
     const aavesBALBalanceAfter = await balToken.balanceOf(aave.address);
