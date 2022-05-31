@@ -16,44 +16,40 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract OtcEscrowApprovals {
     using SafeERC20 for IERC20;
 
-    address public receivedToken;
-    address public sentToken;
-    address public recipient;
+    address public immutable balancerDAO;
+    address public immutable aaveDAO;
 
-    address public beneficiary;
-    uint256 public receivedAmount;
-    uint256 public sentAmount;
+    address public immutable balToken;
+    address public immutable aaveToken;
+
+    uint256 public immutable balAmount;
+    uint256 public immutable aaveAmount;
 
     constructor(
-        address beneficiary_,
-        address recipient_,
-        address receivedToken_,
-        address sentToken_,
-        uint256 receivedAmount_,
-        uint256 sentAmount_
+        address balancerDAO_,
+        address aaveDAO_,
+        address balToken_,
+        address aaveToken_,
+        uint256 balAmount_,
+        uint256 aaveAmount_
     ) {
-        beneficiary = beneficiary_;
-        recipient = recipient_;
+        balancerDAO = balancerDAO_;
+        aaveDAO = aaveDAO_;
 
-        receivedToken = receivedToken_;
-        sentToken = sentToken_;
+        balToken = balToken_;
+        aaveToken = aaveToken_;
 
-        receivedAmount = receivedAmount_;
-        sentAmount = sentAmount_;
+        balAmount = balAmount_;
+        aaveAmount = aaveAmount_;
     }
 
-    modifier onlyApprovedParties() {
-        require(msg.sender == recipient || msg.sender == beneficiary);
-        _;
-    }
-
-    /// @dev Atomically trade specified amount of receivedToken for control over sentToken in vesting contract
-    /// @dev Either counterparty may execute swap if sufficient token approvals are given by both parties
-    function swap() public onlyApprovedParties {
+    /// @dev Atomically trade specified amounts of BAL token and AAVE token
+    /// @dev Anyone may execute the swap if sufficient token approvals are given by both parties
+    function swap() external {
         // Transfer expected receivedToken from beneficiary
-        IERC20(receivedToken).safeTransferFrom(beneficiary, recipient, receivedAmount);
+        IERC20(balToken).safeTransferFrom(balancerDAO, aaveDAO, balAmount);
 
         // Transfer sentToken to beneficiary
-        IERC20(sentToken).safeTransferFrom(recipient, beneficiary, sentAmount);
+        IERC20(aaveToken).safeTransferFrom(aaveDAO, balancerDAO, aaveAmount);
     }
 }

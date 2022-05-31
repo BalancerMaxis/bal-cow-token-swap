@@ -13,43 +13,30 @@ const AAVE_DAO_ON_MAINNET = "0xec568fffba86c094cf06b22134b23074dfe2252c";
 const BAL_TOKEN_ON_MAINNET = "0xba100000625a3754423978a60c9317c58a424e3d";
 const AAVE_TOKEN_ON_MAINNET = "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9";
 
-task("deploy", "Deploys OtcEscrow")
-  .addParam(
-    "beneficiary",
-    "Address of the beneficiary (BAL side)",
-    BAL_DAO_ON_MAINNET,
-    types.string
-  )
-  .addParam("recipient", "Address of the recipient (AAVE side)", AAVE_DAO_ON_MAINNET, types.string)
-  .addParam(
-    "receivedToken",
-    "Address of the token received (BAL)",
-    BAL_TOKEN_ON_MAINNET,
-    types.string
-  )
-  .addParam("sentToken", "Address of the token sent (AAVE)", AAVE_TOKEN_ON_MAINNET, types.string)
-  .addParam("receivedAmount", "Amount of the token received (BAL)", undefined, types.int)
-  .addParam("sentAmount", "Amount of the token sent (AAVE)", undefined, types.int)
+task("deploy", "Deploys OtcEscrowApprovals")
+  .addParam("balancerDAO", "Address of Balancer DAO", BAL_DAO_ON_MAINNET, types.string)
+  .addParam("aaveDAO", "Address of Aave DAO", AAVE_DAO_ON_MAINNET, types.string)
+  .addParam("balToken", "Address of the BAL token contract", BAL_TOKEN_ON_MAINNET, types.string)
+  .addParam("aaveToken", "Address of the AAVE token contract", AAVE_TOKEN_ON_MAINNET, types.string)
+  .addParam("balAmount", "Amount of BAL token to swap", undefined, types.int)
+  .addParam("aaveAmount", "Amount of AAVE token to swap", undefined, types.int)
   .setAction(
-    async (
-      { beneficiary, recipient, receivedToken, sentToken, receivedAmount, sentAmount },
-      { ethers }
-    ) => {
+    async ({ balancerDAO, aaveDAO, balToken, aaveToken, balAmount, aaveAmount }, { ethers }) => {
       const network = await ethers.provider.getNetwork();
       if (network.chainId === 1) {
-        if (beneficiary.toLowerCase() !== BAL_DAO_ON_MAINNET) {
+        if (balancerDAO.toLowerCase() !== BAL_DAO_ON_MAINNET) {
           console.log("Balancer DAO address mismatch, exiting..");
           return;
         }
-        if (recipient.toLowerCase() !== AAVE_DAO_ON_MAINNET) {
+        if (aaveDAO.toLowerCase() !== AAVE_DAO_ON_MAINNET) {
           console.log("AAVE DAO address mismatch, exiting..");
           return;
         }
-        if (receivedToken.toLowerCase() !== BAL_TOKEN_ON_MAINNET) {
+        if (balToken.toLowerCase() !== BAL_TOKEN_ON_MAINNET) {
           console.log("BAL token address mismatch, exiting..");
           return;
         }
-        if (sentToken.toLowerCase() !== AAVE_TOKEN_ON_MAINNET) {
+        if (aaveToken.toLowerCase() !== AAVE_TOKEN_ON_MAINNET) {
           console.log("AAVE token address mismatch, exiting..");
           return;
         }
@@ -59,16 +46,16 @@ task("deploy", "Deploys OtcEscrow")
         ? "0xa5409ec958c83c3f309868babaca7c86dcb077c1"
         : "0xf57b2c51ded3a29e6891aba85459d600256cf317";
 
-      const factory = await ethers.getContractFactory("OtcEscrow");
+      const factory = await ethers.getContractFactory("OtcEscrowApprovals");
 
       const gasPrice = await getGasPriceWithPrompt(ethers);
       await printEstimatedCost(factory, gasPrice, [
-        beneficiary,
-        recipient,
-        receivedToken,
-        sentToken,
-        receivedAmount,
-        sentAmount,
+        balancerDAO,
+        aaveDAO,
+        balToken,
+        aaveToken,
+        balAmount,
+        aaveAmount,
       ]);
 
       const deployConfirmed = await getDeploymentConfirmationWithPrompt();
@@ -79,16 +66,16 @@ task("deploy", "Deploys OtcEscrow")
 
       console.log("Deploying...");
       const contract = await factory.deploy(
-        beneficiary,
-        recipient,
-        receivedToken,
-        sentToken,
-        receivedAmount,
-        sentAmount,
+        balancerDAO,
+        aaveDAO,
+        balToken,
+        aaveToken,
+        balAmount,
+        aaveAmount,
         { gasPrice }
       );
       console.log(`Transaction hash: ${contract.deployTransaction.hash} \n`);
-      console.log(`OtcEscrow deployed to ${contract.address}`);
+      console.log(`OtcEscrowApprovals deployed to ${contract.address}`);
     }
   );
 
@@ -126,7 +113,7 @@ export async function printEstimatedCost(
   );
   const deploymentCost = deploymentGas.mul(gasPrice);
   console.log(
-    `Estimated cost to deploy OtcEscrow: ${utils.formatUnits(deploymentCost, "ether")} ETH`
+    `Estimated cost to deploy OtcEscrowApprovals: ${utils.formatUnits(deploymentCost, "ether")} ETH`
   );
 }
 
