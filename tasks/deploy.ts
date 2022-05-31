@@ -14,8 +14,8 @@ const BAL_TOKEN_ON_MAINNET = "0xba100000625a3754423978a60c9317c58a424e3d";
 const AAVE_TOKEN_ON_MAINNET = "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9";
 
 task("deploy", "Deploys OtcEscrowApprovals")
-  .addParam("balancerDAO", "Address of Balancer DAO", BAL_DAO_ON_MAINNET, types.string)
-  .addParam("aaveDAO", "Address of Aave DAO", AAVE_DAO_ON_MAINNET, types.string)
+  .addParam("balancer", "Address of Balancer DAO", BAL_DAO_ON_MAINNET, types.string)
+  .addParam("aave", "Address of Aave DAO", AAVE_DAO_ON_MAINNET, types.string)
   .addParam("balToken", "Address of the BAL token contract", BAL_TOKEN_ON_MAINNET, types.string)
   .addParam("aaveToken", "Address of the AAVE token contract", AAVE_TOKEN_ON_MAINNET, types.string)
   .addParam("balAmount", "Amount of BAL token to swap", undefined, types.int)

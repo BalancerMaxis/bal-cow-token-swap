@@ -20,23 +20,23 @@ You'll need to know the exact amount of tokens each party should receive; also n
 
 Deploy script inputs:
 
-- `beneficiary`: the address of Balancer's DAO treasury/executor contract
-- `recipient`: the address of Aave's DAO treasury/executor contract
-- `receivedToken`: the address of the BAL token contract
-- `sentToken`: the address of the AAVE token contract
-- `receivedAmount`: the amount of BAL token sent in this swap
-- `sentAmount`: the amount of AAVE token sent in this swap
+- `balancer`: the address of Balancer's DAO treasury/executor contract
+- `aave`: the address of Aave's DAO treasury/executor contract
+- `balToken`: the address of the BAL token contract
+- `aaveToken`: the address of the AAVE token contract
+- `balAmount`: the amount of BAL token sent in this swap
+- `aaveAmount`: the amount of AAVE token sent in this swap
 
 To deploy to mainnet:
 
 ```shell
-yarn deploy --received-amount <BAL amount> --sent-amount <AAVE amount>
+yarn deploy --bal-amount <BAL amount> --aave-amount <AAVE amount>
 ```
 
 To deploy to a testnet:
 
 ```shell
-yarn deploy --beneficiary <Balancer DAO address> --recipient <Aave DAO address> --receivedToken <BAL token contract address> --sentToken <AAVE token contract address> --received-amount <BAL amount> --sent-amount <AAVE amount>
+yarn deploy --balancer <Balancer DAO address> --aave <Aave DAO address> --bal-token <BAL token contract address> --aave-token <AAVE token contract address> --bal-amount <BAL amount> --aave-amount <AAVE amount>
 ```
 
 ## Etherscan verification
