@@ -2,7 +2,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
-import { TestERC20__factory, IERC20, OtcEscrow__factory, OtcEscrow } from "../typechain";
+import { TestERC20__factory, OtcEscrow__factory, OtcEscrow, TestERC20 } from "../typechain";
 import { BNe18 } from "./utils/numbers";
 
 const BAL_AMOUNT = 100_000;
@@ -12,8 +12,8 @@ describe("Swap Simulation", function () {
   let signer: SignerWithAddress;
   let balancer: SignerWithAddress; // Balancer
   let aave: SignerWithAddress; // Aave
-  let balToken: IERC20;
-  let aaveToken: IERC20;
+  let balToken: TestERC20;
+  let aaveToken: TestERC20;
   let balAmountWad: BigNumber;
   let aaveAmountWad: BigNumber;
   let otcEscrow: OtcEscrow;
@@ -23,13 +23,15 @@ describe("Swap Simulation", function () {
     signer = signers[0];
     balancer = signers[1];
     aave = signers[2];
-
-    const tokenFactory = new TestERC20__factory(signer);
-    balToken = await tokenFactory.deploy(balancer.address, BNe18(1_000_000)); // BAL
-    aaveToken = await tokenFactory.deploy(aave.address, BNe18(1_000_000)); // AAVE
-
     balAmountWad = BNe18(BAL_AMOUNT);
     aaveAmountWad = BNe18(AAVE_AMOUNT);
+
+    const tokenFactory = new TestERC20__factory(signer);
+    balToken = await tokenFactory.deploy("Balancer Token", "BAL");
+    aaveToken = await tokenFactory.deploy("Aave Token", "AAVE");
+
+    balToken.mint(balancer.address, balAmountWad);
+    aaveToken.mint(aave.address, aaveAmountWad);
   });
 
   it("Deploy OtcEscrow", async () => {
