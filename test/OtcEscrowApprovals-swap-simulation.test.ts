@@ -2,13 +2,18 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
-import { TestERC20__factory, OtcEscrow__factory, OtcEscrow, TestERC20 } from "../typechain";
+import {
+  TestERC20__factory,
+  TestERC20,
+  OtcEscrowApprovals,
+  OtcEscrowApprovals__factory,
+} from "../typechain";
 import { BNe18 } from "./utils/numbers";
 
 const BAL_AMOUNT = 100_000;
 const AAVE_AMOUNT = 7_000;
 
-describe("Swap Simulation", function () {
+describe("OtcEscrowApprovals Swap Simulation", function () {
   let signer: SignerWithAddress;
   let balancer: SignerWithAddress; // Balancer
   let aave: SignerWithAddress; // Aave
@@ -16,7 +21,7 @@ describe("Swap Simulation", function () {
   let aaveToken: TestERC20;
   let balAmountWad: BigNumber;
   let aaveAmountWad: BigNumber;
-  let otcEscrow: OtcEscrow;
+  let otcEscrow: OtcEscrowApprovals;
 
   before(async () => {
     const signers = await ethers.getSigners();
@@ -34,8 +39,8 @@ describe("Swap Simulation", function () {
     aaveToken.mint(aave.address, aaveAmountWad);
   });
 
-  it("Deploy OtcEscrow", async () => {
-    otcEscrow = await new OtcEscrow__factory(signer).deploy(
+  it("Deploy OtcEscrowApprovals", async () => {
+    otcEscrow = await new OtcEscrowApprovals__factory(signer).deploy(
       balancer.address,
       aave.address,
       balToken.address,
@@ -55,7 +60,7 @@ describe("Swap Simulation", function () {
     const balancersAAVEBalanceBefore = await aaveToken.balanceOf(balancer.address);
 
     // These are the transactions that should run in the Aave proposal
-    await aaveToken.connect(aave).transfer(otcEscrow.address, aaveAmountWad);
+    await aaveToken.connect(aave).approve(otcEscrow.address, aaveAmountWad);
     await otcEscrow.connect(aave).swap();
 
     // Verifying balances
