@@ -61,7 +61,10 @@ describe("OtcEscrowApprovals Swap Simulation", function () {
 
     // These are the transactions that should run in the Aave proposal
     await aaveToken.connect(aave).approve(otcEscrow.address, aaveAmountWad);
-    await otcEscrow.connect(aave).swap();
+
+    await expect(otcEscrow.connect(aave).swap())
+      .to.emit(otcEscrow, "Swap")
+      .withArgs(balAmountWad, aaveAmountWad);
 
     // Verifying balances
     const aavesBALBalanceAfter = await balToken.balanceOf(aave.address);

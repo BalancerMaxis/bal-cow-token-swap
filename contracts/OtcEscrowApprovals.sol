@@ -25,6 +25,8 @@ contract OtcEscrowApprovals {
     uint256 public immutable balAmount;
     uint256 public immutable aaveAmount;
 
+    event Swap(uint256 balAmount, uint256 aaveAmount);
+
     constructor(
         address balancerDAO_,
         address aaveDAO_,
@@ -51,5 +53,7 @@ contract OtcEscrowApprovals {
 
         // Transfer sentToken to beneficiary
         IERC20(aaveToken).safeTransferFrom(aaveDAO, balancerDAO, aaveAmount);
+
+        emit Swap(balAmount, aaveAmount);
     }
 }
