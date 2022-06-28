@@ -55,7 +55,7 @@ contract OtcEscrowApprovals {
     /// @dev Anyone may execute the swap if sufficient token approvals are given by both parties
     function swap() external {
         // Check in case of infinite approvals and prevent a second swap
-        if (!hasSwapOccured) revert SwapAlreadyOccured();
+        if (hasSwapOccured) revert SwapAlreadyOccured();
         hasSwapOccured = true;
 
         // Transfer expected receivedToken from beneficiary
