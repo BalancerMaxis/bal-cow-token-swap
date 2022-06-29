@@ -25,7 +25,11 @@ contract OtcEscrowApprovals {
     uint256 public immutable balAmount;
     uint256 public immutable aaveAmount;
 
+    bool public hasSwapOccured;
+
     event Swap(uint256 balAmount, uint256 aaveAmount);
+
+    error SwapAlreadyOccured();
 
     constructor(
         address balancerDAO_,
@@ -48,6 +52,10 @@ contract OtcEscrowApprovals {
     /// @dev Atomically trade specified amounts of BAL token and AAVE token
     /// @dev Anyone may execute the swap if sufficient token approvals are given by both parties
     function swap() external {
+        // Check in case of infinite approvals and prevent a second swap
+        if (hasSwapOccured) revert SwapAlreadyOccured();
+        hasSwapOccured = true;
+
         // Transfer expected receivedToken from beneficiary
         IERC20(balToken).safeTransferFrom(balancerDAO, aaveDAO, balAmount);
 
