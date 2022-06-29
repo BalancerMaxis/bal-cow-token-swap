@@ -25,7 +25,7 @@ contract OtcEscrowApprovals {
     uint256 public immutable balAmount;
     uint256 public immutable aaveAmount;
 
-    bool private hasSwapOccured;
+    bool public hasSwapOccured;
 
     event Swap(uint256 balAmount, uint256 aaveAmount);
 
@@ -47,8 +47,6 @@ contract OtcEscrowApprovals {
 
         balAmount = balAmount_;
         aaveAmount = aaveAmount_;
-
-        hasSwapOccured = false;
     }
 
     /// @dev Atomically trade specified amounts of BAL token and AAVE token
