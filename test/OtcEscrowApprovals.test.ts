@@ -98,4 +98,12 @@ describe("OtcEscrowApprovals", () => {
 
     await expect(otcEscrow.swap()).to.emit(otcEscrow, "Swap").withArgs(balAmountWad, aaveAmountWad);
   });
+
+  it("swap fails when tried to execute for more than one time", async () => {
+    await balToken.connect(balancer).approve(otcEscrow.address, BNe18(10_000_000));
+    await aaveToken.connect(aave).approve(otcEscrow.address, BNe18(10_000_000));
+    await otcEscrow.connect(signer).swap();
+
+    await expect(otcEscrow.swap()).to.be.revertedWith("SwapAlreadyOccured()");
+  });
 });
