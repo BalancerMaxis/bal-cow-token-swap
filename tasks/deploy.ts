@@ -12,14 +12,16 @@ const BAL_DAO_ON_MAINNET = "0xb618f903ad1d00d6f7b92f5b0954dcdc056fc533";
 const COW_DAO_ON_MAINNET = "0xcA771eda0c70aA7d053aB1B25004559B918FE662";
 const BAL_TOKEN_ON_MAINNET = "0xba100000625a3754423978a60c9317c58a424e3d";
 const COW_TOKEN_ON_MAINNET = "0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB";
+const BAL_AMOUNT_ON_MAINNET = "250000000000000000000000";
+const COW_AMOUNT_ON_MAINNET = "1481949409075772045441825";
 
 task("deploy", "Deploys OtcEscrowApprovals")
   .addParam("balancerDAO", "Address of Balancer DAO", BAL_DAO_ON_MAINNET, types.string)
   .addParam("cowDAO", "Address of Cow DAO", COW_DAO_ON_MAINNET, types.string)
   .addParam("balToken", "Address of the BAL token contract", BAL_TOKEN_ON_MAINNET, types.string)
   .addParam("cowToken", "Address of the COW token contract", COW_TOKEN_ON_MAINNET, types.string)
-  .addParam("balAmount", "Amount of BAL token to swap", undefined, types.int)
-  .addParam("cowAmount", "Amount of COW token to swap", undefined, types.int)
+  .addParam("balAmount", "Amount of BAL token to swap", BAL_AMOUNT_ON_MAINNET, types.string)
+  .addParam("cowAmount", "Amount of COW token to swap", COW_AMOUNT_ON_MAINNET, types.string)
   .setAction(
     async ({ balancerDAO, cowDAO, balToken, cowToken, balAmount, cowAmount }, { ethers }) => {
       const network = await ethers.provider.getNetwork();
