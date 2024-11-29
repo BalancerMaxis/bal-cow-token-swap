@@ -10,17 +10,17 @@ import {
 } from "../typechain";
 import { BNe18 } from "./utils/numbers";
 
-const BAL_AMOUNT = 100_000;
-const AAVE_AMOUNT = 7_000;
+const BAL_AMOUNT = 250_000;
+const COW_AMOUNT = 1_481_949;
 
 describe("OtcEscrowApprovals Swap Simulation", function () {
   let signer: SignerWithAddress;
   let balancer: SignerWithAddress;
-  let aave: SignerWithAddress;
+  let cow: SignerWithAddress;
   let balToken: TestERC20;
-  let aaveToken: TestERC20;
+  let cowToken: TestERC20;
   let balAmountWad: BigNumber;
-  let aaveAmountWad: BigNumber;
+  let cowAmountWad: BigNumber;
   let otcEscrow: OtcEscrowApprovals;
   let anyone: SignerWithAddress;
 
@@ -28,27 +28,27 @@ describe("OtcEscrowApprovals Swap Simulation", function () {
     const signers = await ethers.getSigners();
     signer = signers[0];
     balancer = signers[1];
-    aave = signers[2];
+    cow = signers[2];
     anyone = signers[3];
     balAmountWad = BNe18(BAL_AMOUNT);
-    aaveAmountWad = BNe18(AAVE_AMOUNT);
+    cowAmountWad = BNe18(COW_AMOUNT);
 
     const tokenFactory = new TestERC20__factory(signer);
     balToken = await tokenFactory.deploy("Balancer Token", "BAL");
-    aaveToken = await tokenFactory.deploy("Aave Token", "AAVE");
+    cowToken = await tokenFactory.deploy("Cow Token", "COW");
 
     balToken.mint(balancer.address, balAmountWad);
-    aaveToken.mint(aave.address, aaveAmountWad);
+    cowToken.mint(cow.address, cowAmountWad);
   });
 
   it("Deploy OtcEscrowApprovals", async () => {
     otcEscrow = await new OtcEscrowApprovals__factory(signer).deploy(
       balancer.address,
-      aave.address,
+      cow.address,
       balToken.address,
-      aaveToken.address,
+      cowToken.address,
       balAmountWad,
-      aaveAmountWad
+      cowAmountWad
     );
   });
 
@@ -57,23 +57,23 @@ describe("OtcEscrowApprovals Swap Simulation", function () {
     await balToken.connect(balancer).approve(otcEscrow.address, balAmountWad);
   });
 
-  it("Second proposal execution: AAVE approves spending their token", async () => {
-    await aaveToken.connect(aave).approve(otcEscrow.address, aaveAmountWad);
+  it("Second proposal execution: COW approves spending their token", async () => {
+    await cowToken.connect(cow).approve(otcEscrow.address, cowAmountWad);
   });
 
   it("Llama swap execution (anyone can execute)", async () => {
-    const aavesBALBalanceBefore = await balToken.balanceOf(aave.address);
-    const balancersAAVEBalanceBefore = await aaveToken.balanceOf(balancer.address);
+    const cowsBALBalanceBefore = await balToken.balanceOf(cow.address);
+    const balancersCOWBalanceBefore = await cowToken.balanceOf(balancer.address);
 
     await expect(otcEscrow.connect(anyone).swap())
       .to.emit(otcEscrow, "Swap")
-      .withArgs(balAmountWad, aaveAmountWad);
+      .withArgs(balAmountWad, cowAmountWad);
 
     // Verifying balances
-    const aavesBALBalanceAfter = await balToken.balanceOf(aave.address);
-    expect(aavesBALBalanceAfter).to.equal(aavesBALBalanceBefore.add(balAmountWad));
+    const cowsBALBalanceAfter = await balToken.balanceOf(cow.address);
+    expect(cowsBALBalanceAfter).to.equal(cowsBALBalanceBefore.add(balAmountWad));
 
-    const balancersAAVEBalanceAfter = await aaveToken.balanceOf(balancer.address);
-    expect(balancersAAVEBalanceAfter).to.equal(balancersAAVEBalanceBefore.add(aaveAmountWad));
+    const balancersCOWBalanceAfter = await cowToken.balanceOf(balancer.address);
+    expect(balancersCOWBalanceAfter).to.equal(balancersCOWBalanceBefore.add(cowAmountWad));
   });
 });

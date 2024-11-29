@@ -1,4 +1,4 @@
-# Balancer<>Aave Token Swap
+# Balancer<>Cow Token Swap
 
 This project consists of:
 
@@ -21,22 +21,22 @@ You'll need to know the exact amount of tokens each party should receive; also n
 Deploy script inputs:
 
 - `balancer`: the address of Balancer's DAO treasury/executor contract
-- `aave`: the address of Aave's DAO treasury/executor contract
+- `cow`: the address of Cow's DAO treasury/executor contract
 - `balToken`: the address of the BAL token contract
-- `aaveToken`: the address of the AAVE token contract
+- `cowToken`: the address of the COW token contract
 - `balAmount`: the amount of BAL token sent in this swap
-- `aaveAmount`: the amount of AAVE token sent in this swap
+- `cowAmount`: the amount of COW token sent in this swap
 
 To deploy to mainnet:
 
 ```shell
-yarn deploy --bal-amount <BAL amount> --aave-amount <AAVE amount>
+yarn deploy --bal-amount <BAL amount> --cow-amount <COW amount>
 ```
 
 To deploy to a testnet:
 
 ```shell
-yarn deploy --balancer <Balancer DAO address> --aave <Aave DAO address> --bal-token <BAL token contract address> --aave-token <AAVE token contract address> --bal-amount <BAL amount> --aave-amount <AAVE amount>
+yarn deploy --balancer <Balancer DAO address> --cow <Cow DAO address> --bal-token <BAL token contract address> --cow-token <COW token contract address> --bal-amount <BAL amount> --cow-amount <COW amount>
 ```
 
 ## Etherscan verification

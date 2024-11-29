@@ -9,35 +9,35 @@ promptjs.message = "> ";
 promptjs.delimiter = "";
 
 const BAL_DAO_ON_MAINNET = "0xb618f903ad1d00d6f7b92f5b0954dcdc056fc533";
-const AAVE_DAO_ON_MAINNET = "0xec568fffba86c094cf06b22134b23074dfe2252c";
+const COW_DAO_ON_MAINNET = "0xcA771eda0c70aA7d053aB1B25004559B918FE662";
 const BAL_TOKEN_ON_MAINNET = "0xba100000625a3754423978a60c9317c58a424e3d";
-const AAVE_TOKEN_ON_MAINNET = "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9";
+const COW_TOKEN_ON_MAINNET = "0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB";
 
 task("deploy", "Deploys OtcEscrowApprovals")
   .addParam("balancer", "Address of Balancer DAO", BAL_DAO_ON_MAINNET, types.string)
-  .addParam("aave", "Address of Aave DAO", AAVE_DAO_ON_MAINNET, types.string)
+  .addParam("cow", "Address of Cow DAO", COW_DAO_ON_MAINNET, types.string)
   .addParam("balToken", "Address of the BAL token contract", BAL_TOKEN_ON_MAINNET, types.string)
-  .addParam("aaveToken", "Address of the AAVE token contract", AAVE_TOKEN_ON_MAINNET, types.string)
+  .addParam("cowToken", "Address of the COW token contract", COW_TOKEN_ON_MAINNET, types.string)
   .addParam("balAmount", "Amount of BAL token to swap", undefined, types.int)
-  .addParam("aaveAmount", "Amount of AAVE token to swap", undefined, types.int)
+  .addParam("cowAmount", "Amount of COW token to swap", undefined, types.int)
   .setAction(
-    async ({ balancerDAO, aaveDAO, balToken, aaveToken, balAmount, aaveAmount }, { ethers }) => {
+    async ({ balancerDAO, cowDAO, balToken, cowToken, balAmount, cowAmount }, { ethers }) => {
       const network = await ethers.provider.getNetwork();
       if (network.chainId === 1) {
         if (balancerDAO.toLowerCase() !== BAL_DAO_ON_MAINNET) {
           console.log("Balancer DAO address mismatch, exiting..");
           return;
         }
-        if (aaveDAO.toLowerCase() !== AAVE_DAO_ON_MAINNET) {
-          console.log("AAVE DAO address mismatch, exiting..");
+        if (cowDAO.toLowerCase() !== COW_DAO_ON_MAINNET) {
+          console.log("COW DAO address mismatch, exiting..");
           return;
         }
         if (balToken.toLowerCase() !== BAL_TOKEN_ON_MAINNET) {
           console.log("BAL token address mismatch, exiting..");
           return;
         }
-        if (aaveToken.toLowerCase() !== AAVE_TOKEN_ON_MAINNET) {
-          console.log("AAVE token address mismatch, exiting..");
+        if (cowToken.toLowerCase() !== COW_TOKEN_ON_MAINNET) {
+          console.log("COW token address mismatch, exiting..");
           return;
         }
       }
@@ -47,11 +47,11 @@ task("deploy", "Deploys OtcEscrowApprovals")
       const gasPrice = await getGasPriceWithPrompt(ethers);
       await printEstimatedCost(factory, gasPrice, [
         balancerDAO,
-        aaveDAO,
+        cowDAO,
         balToken,
-        aaveToken,
+        cowToken,
         balAmount,
-        aaveAmount,
+        cowAmount,
       ]);
 
       const deployConfirmed = await getDeploymentConfirmationWithPrompt();
@@ -63,11 +63,11 @@ task("deploy", "Deploys OtcEscrowApprovals")
       console.log("Deploying...");
       const contract = await factory.deploy(
         balancerDAO,
-        aaveDAO,
+        cowDAO,
         balToken,
-        aaveToken,
+        cowToken,
         balAmount,
-        aaveAmount,
+        cowAmount,
         { gasPrice }
       );
       console.log(`Transaction hash: ${contract.deployTransaction.hash} \n`);

@@ -17,39 +17,39 @@ contract OtcEscrowApprovals {
     using SafeERC20 for IERC20;
 
     address public immutable balancerDAO;
-    address public immutable aaveDAO;
+    address public immutable cowDAO;
 
     address public immutable balToken;
-    address public immutable aaveToken;
+    address public immutable cowToken;
 
     uint256 public immutable balAmount;
-    uint256 public immutable aaveAmount;
+    uint256 public immutable cowAmount;
 
     bool public hasSwapOccured;
 
-    event Swap(uint256 balAmount, uint256 aaveAmount);
+    event Swap(uint256 balAmount, uint256 cowAmount);
 
     error SwapAlreadyOccured();
 
     constructor(
         address balancerDAO_,
-        address aaveDAO_,
+        address cowDAO_,
         address balToken_,
-        address aaveToken_,
+        address cowToken_,
         uint256 balAmount_,
-        uint256 aaveAmount_
+        uint256 cowAmount_
     ) {
         balancerDAO = balancerDAO_;
-        aaveDAO = aaveDAO_;
+        cowDAO = cowDAO_;
 
         balToken = balToken_;
-        aaveToken = aaveToken_;
+        cowToken = cowToken_;
 
         balAmount = balAmount_;
-        aaveAmount = aaveAmount_;
+        cowAmount = cowAmount_;
     }
 
-    /// @dev Atomically trade specified amounts of BAL token and AAVE token
+    /// @dev Atomically trade specified amounts of BAL token and COW token
     /// @dev Anyone may execute the swap if sufficient token approvals are given by both parties
     function swap() external {
         // Check in case of infinite approvals and prevent a second swap
@@ -57,11 +57,11 @@ contract OtcEscrowApprovals {
         hasSwapOccured = true;
 
         // Transfer expected receivedToken from beneficiary
-        IERC20(balToken).safeTransferFrom(balancerDAO, aaveDAO, balAmount);
+        IERC20(balToken).safeTransferFrom(balancerDAO, cowDAO, balAmount);
 
         // Transfer sentToken to beneficiary
-        IERC20(aaveToken).safeTransferFrom(aaveDAO, balancerDAO, aaveAmount);
+        IERC20(cowToken).safeTransferFrom(cowDAO, balancerDAO, cowAmount);
 
-        emit Swap(balAmount, aaveAmount);
+        emit Swap(balAmount, cowAmount);
     }
 }
