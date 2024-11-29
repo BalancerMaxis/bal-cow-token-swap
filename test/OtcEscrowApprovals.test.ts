@@ -104,6 +104,6 @@ describe("OtcEscrowApprovals", () => {
     await cowToken.connect(cow).approve(otcEscrow.address, BNe18(10_000_000));
     await otcEscrow.connect(signer).swap();
 
-    await expect(otcEscrow.swap()).to.be.revertedWith("SwapAlreadyOccured()");
+    await expect(otcEscrow.swap()).to.be.revertedWith("SwapAlreadyOccurred()");
   });
 });
