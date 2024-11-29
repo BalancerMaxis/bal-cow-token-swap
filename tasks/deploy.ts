@@ -14,8 +14,8 @@ const BAL_TOKEN_ON_MAINNET = "0xba100000625a3754423978a60c9317c58a424e3d";
 const COW_TOKEN_ON_MAINNET = "0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB";
 
 task("deploy", "Deploys OtcEscrowApprovals")
-  .addParam("balancer", "Address of Balancer DAO", BAL_DAO_ON_MAINNET, types.string)
-  .addParam("cow", "Address of Cow DAO", COW_DAO_ON_MAINNET, types.string)
+  .addParam("balancerDAO", "Address of Balancer DAO", BAL_DAO_ON_MAINNET, types.string)
+  .addParam("cowDAO", "Address of Cow DAO", COW_DAO_ON_MAINNET, types.string)
   .addParam("balToken", "Address of the BAL token contract", BAL_TOKEN_ON_MAINNET, types.string)
   .addParam("cowToken", "Address of the COW token contract", COW_TOKEN_ON_MAINNET, types.string)
   .addParam("balAmount", "Amount of BAL token to swap", undefined, types.int)
