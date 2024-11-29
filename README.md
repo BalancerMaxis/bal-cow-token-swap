@@ -30,13 +30,13 @@ Deploy script inputs:
 To deploy to mainnet:
 
 ```shell
-yarn deploy --bal-amount <BAL amount> --cow-amount <COW amount>
+npx hardhat deploy --network ethereum
 ```
 
 To deploy to a testnet:
 
 ```shell
-yarn deploy --balancer <Balancer DAO address> --cow <Cow DAO address> --bal-token <BAL token contract address> --cow-token <COW token contract address> --bal-amount <BAL amount> --cow-amount <COW amount>
+npx hardhat deploy --network sepolia
 ```
 
 ## Etherscan verification
@@ -49,10 +49,10 @@ In this project, copy the .env.example file to a file named .env, and then edit 
 npx hardhat deploy --network sepolia
 ```
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command, followed by the constructor parameters you used to deploy the contract:
+Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command, after setting the constructor arguments in `tasks/arguments.js`:
 
 ```shell
-npx hardhat verify --network sepolia DEPLOYED_CONTRACT_ADDRESS <paste constructor arguments here>
+npx hardhat verify --network sepolia --constructor-args tasks/arguments.js DEPLOYED_CONTRACT_ADDRESS
 ```
 
 ## Performance optimizations
