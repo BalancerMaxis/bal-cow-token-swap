@@ -25,11 +25,11 @@ contract OtcEscrowApprovals {
     uint256 public immutable balAmount;
     uint256 public immutable cowAmount;
 
-    bool public hasSwapOccured;
+    bool public hasSwapOccurred;
 
     event Swap(uint256 balAmount, uint256 cowAmount);
 
-    error SwapAlreadyOccured();
+    error SwapAlreadyOccurred();
 
     constructor(
         address balancerDAO_,
@@ -53,8 +53,8 @@ contract OtcEscrowApprovals {
     /// @dev Anyone may execute the swap if sufficient token approvals are given by both parties
     function swap() external {
         // Check in case of infinite approvals and prevent a second swap
-        if (hasSwapOccured) revert SwapAlreadyOccured();
-        hasSwapOccured = true;
+        if (hasSwapOccurred) revert SwapAlreadyOccurred();
+        hasSwapOccurred = true;
 
         // Transfer expected receivedToken from beneficiary
         IERC20(balToken).safeTransferFrom(balancerDAO, cowDAO, balAmount);
