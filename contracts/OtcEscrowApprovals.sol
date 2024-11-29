@@ -39,6 +39,13 @@ contract OtcEscrowApprovals {
         uint256 balAmount_,
         uint256 cowAmount_
     ) {
+        require(balancerDAO_ != address(0), "Invalid balancerDAO address");
+        require(cowDAO_ != address(0), "Invalid cowDAO address");
+        require(balToken_ != address(0), "Invalid BAL token address");
+        require(cowToken_ != address(0), "Invalid COW token address");
+        require(balAmount_ > 0, "BAL amount must be greater than 0");
+        require(cowAmount_ > 0, "COW amount must be greater than 0");
+
         balancerDAO = balancerDAO_;
         cowDAO = cowDAO_;
 
