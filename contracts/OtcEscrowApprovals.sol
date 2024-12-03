@@ -18,6 +18,7 @@ contract OtcEscrowApprovals {
 
     address public immutable balancerDAO;
     address public immutable cowDAO;
+    address public immutable cowDestination;
 
     address public immutable balToken;
     address public immutable cowToken;
@@ -34,6 +35,7 @@ contract OtcEscrowApprovals {
     constructor(
         address balancerDAO_,
         address cowDAO_,
+        address cowDestination_,
         address balToken_,
         address cowToken_,
         uint256 balAmount_,
@@ -41,6 +43,7 @@ contract OtcEscrowApprovals {
     ) {
         require(balancerDAO_ != address(0), "Invalid balancerDAO address");
         require(cowDAO_ != address(0), "Invalid cowDAO address");
+        require(cowDestination_ != address(0), "Invalid cowDestination address");
         require(balToken_ != address(0), "Invalid BAL token address");
         require(cowToken_ != address(0), "Invalid COW token address");
         require(balAmount_ > 0, "BAL amount must be greater than 0");
@@ -48,6 +51,7 @@ contract OtcEscrowApprovals {
 
         balancerDAO = balancerDAO_;
         cowDAO = cowDAO_;
+        cowDestination = cowDestination_;
 
         balToken = balToken_;
         cowToken = cowToken_;
@@ -64,7 +68,7 @@ contract OtcEscrowApprovals {
         hasSwapOccurred = true;
 
         // Transfer expected receivedToken from beneficiary
-        IERC20(balToken).safeTransferFrom(balancerDAO, cowDAO, balAmount);
+        IERC20(balToken).safeTransferFrom(balancerDAO, cowDestination, balAmount);
 
         // Transfer sentToken to beneficiary
         IERC20(cowToken).safeTransferFrom(cowDAO, balancerDAO, cowAmount);

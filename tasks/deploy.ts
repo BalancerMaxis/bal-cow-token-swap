@@ -10,6 +10,7 @@ promptjs.delimiter = "";
 
 const BAL_DAO_ON_MAINNET = "0xb618f903ad1d00d6f7b92f5b0954dcdc056fc533";
 const COW_DAO_ON_MAINNET = "0xca771eda0c70aa7d053ab1b25004559b918fe662";
+const COW_DESTINATION_ON_MAINNET = "0x3e2897e71e504b0510bed7983579280b32ac1ca5";
 const BAL_TOKEN_ON_MAINNET = "0xba100000625a3754423978a60c9317c58a424e3d";
 const COW_TOKEN_ON_MAINNET = "0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab";
 const BAL_AMOUNT_ON_MAINNET = "250000000000000000000000";
@@ -18,12 +19,13 @@ const COW_AMOUNT_ON_MAINNET = "1481949409075772045441825";
 task("deploy", "Deploys OtcEscrowApprovals")
   .addParam("balancerDAO", "Address of Balancer DAO", BAL_DAO_ON_MAINNET, types.string)
   .addParam("cowDAO", "Address of Cow DAO", COW_DAO_ON_MAINNET, types.string)
+  .addParam("cowDestination", "Address of Cow Destination", COW_DESTINATION_ON_MAINNET, types.string)
   .addParam("balToken", "Address of the BAL token contract", BAL_TOKEN_ON_MAINNET, types.string)
   .addParam("cowToken", "Address of the COW token contract", COW_TOKEN_ON_MAINNET, types.string)
   .addParam("balAmount", "Amount of BAL token to swap", BAL_AMOUNT_ON_MAINNET, types.string)
   .addParam("cowAmount", "Amount of COW token to swap", COW_AMOUNT_ON_MAINNET, types.string)
   .setAction(
-    async ({ balancerDAO, cowDAO, balToken, cowToken, balAmount, cowAmount }, { ethers }) => {
+    async ({ balancerDAO, cowDAO, cowDestination, balToken, cowToken, balAmount, cowAmount }, { ethers }) => {
       const network = await ethers.provider.getNetwork();
       if (network.chainId === 1) {
         if (balancerDAO.toLowerCase() !== BAL_DAO_ON_MAINNET) {
@@ -50,6 +52,7 @@ task("deploy", "Deploys OtcEscrowApprovals")
       await printEstimatedCost(factory, gasPrice, [
         balancerDAO,
         cowDAO,
+        cowDestination,
         balToken,
         cowToken,
         balAmount,
@@ -66,6 +69,7 @@ task("deploy", "Deploys OtcEscrowApprovals")
       const contract = await factory.deploy(
         balancerDAO,
         cowDAO,
+        cowDestination,
         balToken,
         cowToken,
         balAmount,
