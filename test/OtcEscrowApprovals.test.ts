@@ -19,6 +19,7 @@ describe("OtcEscrowApprovals", () => {
   let signer: SignerWithAddress;
   let balancer: SignerWithAddress;
   let cow: SignerWithAddress;
+  let cowDestination: SignerWithAddress;
   let balToken: TestERC20;
   let cowToken: TestERC20;
   let balAmountWad: BigNumber;
@@ -30,6 +31,7 @@ describe("OtcEscrowApprovals", () => {
     signer = signers[0];
     balancer = signers[1];
     cow = signers[2];
+    cowDestination = signers[3];
     balAmountWad = BNe18(1_000_000);
     cowAmountWad = BNe18(1_000_000);
 
@@ -43,6 +45,7 @@ describe("OtcEscrowApprovals", () => {
     otcEscrow = await new OtcEscrowApprovals__factory(signer).deploy(
       balancer.address,
       cow.address,
+      cowDestination.address,
       balToken.address,
       cowToken.address,
       balAmountWad,

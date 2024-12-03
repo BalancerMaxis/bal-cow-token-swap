@@ -17,6 +17,7 @@ describe("OtcEscrowApprovals Swap Simulation", function () {
   let signer: SignerWithAddress;
   let balancer: SignerWithAddress;
   let cow: SignerWithAddress;
+  let cowDestination: SignerWithAddress;
   let balToken: TestERC20;
   let cowToken: TestERC20;
   let balAmountWad: BigNumber;
@@ -29,7 +30,8 @@ describe("OtcEscrowApprovals Swap Simulation", function () {
     signer = signers[0];
     balancer = signers[1];
     cow = signers[2];
-    anyone = signers[3];
+    cowDestination = signers[3];
+    anyone = signers[4];
     balAmountWad = BNe18(BAL_AMOUNT);
     cowAmountWad = BNe18(COW_AMOUNT);
 
@@ -45,6 +47,7 @@ describe("OtcEscrowApprovals Swap Simulation", function () {
     otcEscrow = await new OtcEscrowApprovals__factory(signer).deploy(
       balancer.address,
       cow.address,
+      cowDestination.address,
       balToken.address,
       cowToken.address,
       balAmountWad,
@@ -62,7 +65,7 @@ describe("OtcEscrowApprovals Swap Simulation", function () {
   });
 
   it("Llama swap execution (anyone can execute)", async () => {
-    const cowsBALBalanceBefore = await balToken.balanceOf(cow.address);
+    const cowsBALBalanceBefore = await balToken.balanceOf(cowDestination.address);
     const balancersCOWBalanceBefore = await cowToken.balanceOf(balancer.address);
 
     await expect(otcEscrow.connect(anyone).swap())
@@ -70,7 +73,7 @@ describe("OtcEscrowApprovals Swap Simulation", function () {
       .withArgs(balAmountWad, cowAmountWad);
 
     // Verifying balances
-    const cowsBALBalanceAfter = await balToken.balanceOf(cow.address);
+    const cowsBALBalanceAfter = await balToken.balanceOf(cowDestination.address);
     expect(cowsBALBalanceAfter).to.equal(cowsBALBalanceBefore.add(balAmountWad));
 
     const balancersCOWBalanceAfter = await cowToken.balanceOf(balancer.address);
