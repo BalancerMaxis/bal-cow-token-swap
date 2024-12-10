@@ -62,19 +62,19 @@ describe("OtcEscrowApprovals", () => {
   });
 
   it("swap fails before any approvals", async () => {
-    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20: insufficient allowance");
+    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20InsufficientAllowance");
   });
 
   it("swap fails when balancer never approves", async () => {
     await cowToken.connect(cow).approve(otcEscrow.address, cowAmountWad);
 
-    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20: insufficient allowance");
+    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20InsufficientAllowance");
   });
 
   it("swap fails when cow never approves", async () => {
     await balToken.connect(balancer).approve(otcEscrow.address, balAmountWad);
 
-    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20: insufficient allowance");
+    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20InsufficientAllowance");
   });
 
   it("swap fails when balancer revokes approval", async () => {
@@ -83,7 +83,7 @@ describe("OtcEscrowApprovals", () => {
 
     await balToken.connect(balancer).approve(otcEscrow.address, 0);
 
-    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20: insufficient allowance");
+    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20InsufficientAllowance");
   });
 
   it("swap fails when cow revokes approval", async () => {
@@ -92,7 +92,7 @@ describe("OtcEscrowApprovals", () => {
 
     await cowToken.connect(cow).approve(otcEscrow.address, 0);
 
-    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20: insufficient allowance");
+    await expect(otcEscrow.swap()).to.be.revertedWith("ERC20InsufficientAllowance");
   });
 
   it("swap works and emits given sufficient approvals", async () => {
