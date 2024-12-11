@@ -1,10 +1,33 @@
-# Balancer<>Aave Token Swap
+# Balancer<>Cow Token Swap
 
 This project consists of:
 
 - The `OtcEscrow` contract from Fei
 - Tests that demonstate how the escrow contract will be used on mainnet to execute the swap
 - A deployment script
+
+## Deployment
+
+```
+npx hardhat deploy --network ethereum
+> Enter a gas price (gwei) (12) 14
+Estimated cost to deploy OtcEscrowApprovals: 0.005391218 ETH
+> Type "DEPLOY" to confirm: DEPLOY
+Deploying...
+Transaction hash: 0x51a46f5272e1fae65677d1b23a82a16fd31baeee2cd38c5f9a19d671fff9182a
+
+OtcEscrowApprovals deployed to 0x2BC7660181767cd562149ACBA9B89C07E31d7864
+```
+
+```
+npx hardhat verify --network ethereum --constructor-args tasks/arguments.js 0x2BC7660181767cd562149ACBA9B89C07E31d7864
+Successfully submitted source code for contract
+contracts/OtcEscrowApprovals.sol:OtcEscrowApprovals at 0x2BC7660181767cd562149ACBA9B89C07E31d7864
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract OtcEscrowApprovals on the block explorer.
+https://etherscan.io/address/0x2BC7660181767cd562149ACBA9B89C07E31d7864#code
+```
 
 ## Quick start
 
@@ -21,38 +44,38 @@ You'll need to know the exact amount of tokens each party should receive; also n
 Deploy script inputs:
 
 - `balancer`: the address of Balancer's DAO treasury/executor contract
-- `aave`: the address of Aave's DAO treasury/executor contract
+- `cow`: the address of Cow's DAO treasury/executor contract
 - `balToken`: the address of the BAL token contract
-- `aaveToken`: the address of the AAVE token contract
+- `cowToken`: the address of the COW token contract
 - `balAmount`: the amount of BAL token sent in this swap
-- `aaveAmount`: the amount of AAVE token sent in this swap
+- `cowAmount`: the amount of COW token sent in this swap
 
 To deploy to mainnet:
 
 ```shell
-yarn deploy --bal-amount <BAL amount> --aave-amount <AAVE amount>
+npx hardhat deploy --network ethereum
 ```
 
 To deploy to a testnet:
 
 ```shell
-yarn deploy --balancer <Balancer DAO address> --aave <Aave DAO address> --bal-token <BAL token contract address> --aave-token <AAVE token contract address> --bal-amount <BAL amount> --aave-amount <AAVE amount>
+npx hardhat deploy --network sepolia
 ```
 
 ## Etherscan verification
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Rinkeby.
+To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Sepolia.
 
 In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your INFURA project ID, and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
 
 ```shell
-npx hardhat deploy --network rinkeby
+npx hardhat deploy --network sepolia
 ```
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command, followed by the constructor parameters you used to deploy the contract:
+Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command, after setting the constructor arguments in `tasks/arguments.js`:
 
 ```shell
-npx hardhat verify --network rinkeby DEPLOYED_CONTRACT_ADDRESS <paste constructor arguments here>
+npx hardhat verify --network sepolia --constructor-args tasks/arguments.js DEPLOYED_CONTRACT_ADDRESS
 ```
 
 ## Performance optimizations
