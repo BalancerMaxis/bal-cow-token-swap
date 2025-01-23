@@ -10,23 +10,23 @@ This project consists of:
 
 ```
 npx hardhat deploy --network ethereum
-> Enter a gas price (gwei) (7) 8
-Estimated cost to deploy OtcEscrowApprovals: 0.003080504 ETH
+> Enter a gas price (gwei) (9) 10
+Estimated cost to deploy OtcEscrowApprovals: 0.00385075 ETH
 > Type "DEPLOY" to confirm: DEPLOY
 Deploying...
-Transaction hash: 0xf298b0f8f829da683560cf83a07912af197b93f3a198b66447fd9da53118bb16
+Transaction hash: 0x0592fff9eaee2527497b1b953d98048c3b9f26122ea587aca19e2782a5258471
 
-OtcEscrowApprovals deployed to 0x92ac4304DfA30c168D81324567c04917a5cbBf84
+OtcEscrowApprovals deployed to 0xdBe554ee86FEb0b1c0ac4743503D46cbDF0e8B54
 ```
 
 ```
-npx hardhat verify --network ethereum --constructor-args tasks/arguments.js 0x92ac4304DfA30c168D81324567c04917a5cbBf84
+npx hardhat verify --network ethereum --constructor-args tasks/arguments.js 0xdBe554ee86FEb0b1c0ac4743503D46cbDF0e8B54
 Successfully submitted source code for contract
 contracts/OtcEscrowApprovals.sol:OtcEscrowApprovals at 0x92ac4304DfA30c168D81324567c04917a5cbBf84
 for verification on the block explorer. Waiting for verification result...
 
 Successfully verified contract OtcEscrowApprovals on the block explorer.
-https://etherscan.io/address/0x92ac4304DfA30c168D81324567c04917a5cbBf84#code
+https://etherscan.io/address/0xdBe554ee86FEb0b1c0ac4743503D46cbDF0e8B54#code
 ```
 
 ## Quick start

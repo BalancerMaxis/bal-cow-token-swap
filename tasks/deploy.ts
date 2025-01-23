@@ -8,7 +8,7 @@ promptjs.colors = false;
 promptjs.message = "> ";
 promptjs.delimiter = "";
 
-const BAL_DAO_ON_MAINNET = "0xb618f903ad1d00d6f7b92f5b0954dcdc056fc533";
+const BAL_DAO_ON_MAINNET = "0x10a19e7ee7d7f8a52822f6817de8ea18204f2e4f";
 const COW_DAO_ON_MAINNET = "0xca771eda0c70aa7d053ab1b25004559b918fe662";
 const COW_DESTINATION_ON_MAINNET = "0x3e2897e71e504b0510bed7983579280b32ac1ca5";
 const BAL_TOKEN_ON_MAINNET = "0xba100000625a3754423978a60c9317c58a424e3d";
